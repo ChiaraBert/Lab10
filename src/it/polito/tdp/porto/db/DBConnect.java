@@ -9,12 +9,13 @@ import com.mchange.v2.c3p0.DataSources;
 
 public class DBConnect {
 
-	private static String jdbcURL = "jdbc:mysql://localhost/porto2015?user=root&password=root";
+	private static String jdbcURL = "jdbc:mysql://localhost/porto2015?user=root&password=Chiara";
 	private static DataSource ds;
 
 	public static Connection getConnection() {
 
 		if (ds == null) {
+			
 			// crea il DataSource
 			try {
 				ds = DataSources.pooledDataSource(
