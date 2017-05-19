@@ -1,6 +1,8 @@
 package it.polito.tdp.porto;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.porto.model.Author;
@@ -31,6 +33,9 @@ public class PortoController {
        @FXML
     void handleCoautori(ActionEvent event) {
     	Author r= boxPrimo.getValue();
+    	List<Author> co_autori = new ArrayList<Author>();
+    	List<Author> altri = new ArrayList<Author>();
+    	altri=m.getAutori();
     	if(r==null){
     		txtResult.appendText("Seleziona almeno un autore \n");
     		return;
@@ -42,7 +47,16 @@ public class PortoController {
     	
     	//SOLUZIONE CON GRAFO (IMPLEMENTANDO SQL - VELOCE)
     	m.creaGrafo2();
-    	txtResult.appendText(""+m.cercaAltriAutori(r)+"\n");
+    	co_autori=m.cercaAltriAutori(r);
+    	txtResult.appendText(""+co_autori+"\n");
+    	altri.remove(r);
+    	for(Author a: m.getAutori()){
+    		if(co_autori.contains(a))
+    			altri.remove(a);
+    		
+    	}
+    	boxSecondo.getItems().addAll(altri);
+    	
     	
     	
     	//SOLUZIONE CON QUERY(SENZA GRAFO - NON UTILE PER ES 2)
@@ -53,6 +67,14 @@ public class PortoController {
 
     @FXML
     void handleSequenza(ActionEvent event) {
+    	Author r= boxPrimo.getValue();
+    	Author b= boxSecondo.getValue();
+    	if(b==null){
+    		txtResult.appendText("Seleziona almeno un autore 2 \n");
+    		return;
+    	}
+    	txtResult.appendText(""+m.calcolaCamminoMinimo(r,b));
+    	
 
     }
 

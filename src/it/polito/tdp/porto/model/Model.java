@@ -2,6 +2,7 @@ package it.polito.tdp.porto.model;
 
 import java.util.ArrayList;
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,9 @@ import java.util.TreeMap;
 
 import org.jgrapht.Graphs;
 import org.jgrapht.UndirectedGraph;
+import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.Multigraph;
 import org.jgrapht.graph.SimpleGraph;
 import org.jgrapht.traverse.BreadthFirstIterator;
@@ -99,6 +102,7 @@ public class Model {
 	public List<Author> cercaAltriAutori(Author r) {
 		List<Author> visitati = new ArrayList<Author>();
 		visitati=Graphs.neighborListOf(grafo, r);
+		
 		return visitati;
 	}
 		
@@ -114,10 +118,29 @@ public class Model {
 			grafo.addEdge(a.getA1(), a.getA2());
 			
 		}
-			
+		
+				
+	}
+
+	public List<Paper> calcolaCamminoMinimo(Author r, Author b) {
+		List<Author> altri = new ArrayList<>();
+		PortoDAO pd = new PortoDAO();
+		List<Paper> ar = new ArrayList<>();
+		
+		DijkstraShortestPath<Author,DefaultEdge> prova = new DijkstraShortestPath<Author,DefaultEdge>(grafo, r, b);
+				
+		altri=Graphs.getPathVertexList(prova.getPath());
+		System.out.println(altri);
 		
 		
+		for(int i=1; i<altri.size();i++){
+			ar.add(pd.CercaArticolo(altri.get(i-1),altri.get(i)));
+		}
+		
+		return ar;
 		
 	}
+
+	
 
 }
